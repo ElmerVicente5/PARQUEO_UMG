@@ -1,0 +1,87 @@
+/* Estilo del contenedor con imagen de fondo */
+.fondo-registro {
+    background-image: url('../assets/register.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Contenedor del formulario */
+.contenedor-registro {
+    width: 400px;
+    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco semitransparente */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Título */
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Grupo de entradas */
+.grupo-entrada {
+    margin-bottom: 15px;
+}
+
+.grupo-entrada label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.grupo-entrada input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Botones con estilo base */
+.grupo-botones {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.boton {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 45%;
+    color: white;
+}
+
+/* Modificadores para botones */
+.boton-regresar {
+    background-color: #6c757d;
+    margin-right: 10px; /* Espacio adicional a la derecha */
+}
+
+.boton-regresar:hover {
+    background-color: #5a6268;
+}
+
+.boton-enviar {
+    background-color: #007bff;
+    margin-left: 10px; /* Espacio adicional a la izquierda */
+}
+
+.boton-enviar:hover {
+    background-color: #0056b3;
+}
+
+/* Mensaje de error */
+.mensaje-error {
+    color: red;
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: bold;
+}

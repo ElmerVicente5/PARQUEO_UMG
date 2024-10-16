@@ -1,0 +1,70 @@
+.reportes-container {
+    padding: 20px;
+    background-color: #ffffff;
+    height: 100vh;
+    display: flex;
+    justify-content: center; /* Mantener centrado horizontalmente */
+    align-items: flex-start; /* Alinear los elementos hacia el inicio, no en el centro vertical */
+}
+
+.menu-hidden .tabla-container {
+    margin-left: 0; /* Restablecer margen cuando el menú está oculto */
+}
+
+.menu-visible .tabla-container {
+    margin-left: 250px; /* Mueve la tabla hacia la derecha cuando el menú está visible */
+}
+
+.tabla-container {
+    width: 60%; /* Asegura que el contenedor de la tabla cubra el ancho necesario */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px; /* Ajusta este valor para que la tabla esté justo debajo del header */
+    transition: margin-left 0.3s ease; /* Mantiene la transición suave cuando se mueve la tabla */
+    text-align: center;
+}
+
+
+
+
+/* Estilo para los bordes de la tabla generada por react-data-table-component */
+.rdt_Table {
+    border: 1px solid black; /* Agrega un borde negro alrededor de toda la tabla */
+}
+
+/* Estilo para agregar bordes negros a la tabla */
+.rdt_Table {
+    border: 1px solid black; /* Borde externo de la tabla */
+}
+
+.rdt_TableRow, .rdt_TableCol {
+    border: 1px solid black; /* Bordes entre filas y columnas */
+}
+
+
+
+
+.csv-download {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center; /* Asegura que el botón esté centrado */
+}
+
+.csv-download .btn {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.csv-download .btn:hover {
+    background-color: #0056b3;
+}
+
+
+

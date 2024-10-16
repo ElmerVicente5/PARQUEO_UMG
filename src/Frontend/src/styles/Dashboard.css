@@ -1,0 +1,212 @@
+/* Reset básico */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    overflow-x: hidden;
+}
+
+
+/* Contenedor principal del dashboard */
+.dashboard-container {
+    display: flex;
+    background-color:#3b3e55;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    transition:margin-left 0.3s ease;
+    padding-top: 20px; /* Reduce el padding-top */
+    border: 2px solid #ffffff; /* Borde blanco de 2px en todo el contorno */
+}
+
+
+
+
+/* Área de contenido */
+.content-area {
+    flex-grow: 1;
+    transition: margin-left 0.3s ease;
+    margin-left: 230px;
+    margin: center; /* Centrar horizontalmente */
+    max-width: 1200px; /* Limitar el ancho máximo para pantallas grandes */
+    padding: 20px;
+    width: 100%; /* Ocupa todo el ancho disponible */
+    display: flex;
+    background-color: #3b3e55;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0; /* Elimina espacio extra arriba */
+}
+
+
+
+/* Tarjetas de estado */
+.status-cards {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px; 
+}
+
+.status-card {
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    min-width: 190px;
+    max-width: 250px;
+    height: 90px;
+    margin: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Colores de estado */
+.status-card.disponibles { background-color:#0c4f4d; /* Verde suave */
+}
+.status-card.ocupados { background-color: #7295e6; /* Amarillo pastel */
+}
+.status-card.reservados { background-color:#d1da38; /* Rosa pastel */
+}
+.status-card.nodisponible { background-color: #840f02; /* Rojo suave */
+}
+
+/* Texto dentro de las tarjetas */
+.dashboard-container .status-card h2 {
+    margin: 0;
+    font-size: 24px;
+    color:#ebede4;
+}
+
+.dashboard-container .status-card p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    color:#ebede4;
+}
+
+/* Botones de áreas */
+.area-buttons {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    gap: 4px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+/* Estilos de los botones */
+.dashboard-container .area-buttons button {
+    background-color: #d3d3d3;
+    border: 2px solid black;
+    color: black;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.dashboard-container .area-buttons button.selected,
+.dashboard-container .area-buttons button:hover {
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+/* Cuadrícula de estacionamiento: dos filas y cinco columnas */
+.parking-grid {
+   
+    display: grid;
+    grid-template-columns: repeat(8, 1fr); /* Cinco columnas */
+    gap: 20px; /* Espacio entre los slots */
+    justify-content: center;
+    width: 100%;
+    max-width: 600px; /* Ajustar el ancho total del grid */
+    margin: 0 auto; /* Centrar el grid */
+}
+
+.parking-slot {
+    
+    border-radius: 10px;
+    padding: 20px; /* Espacio interno dentro del slot */
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+    font-size: 24px;
+    color:#ebede4;
+    
+    width: 100px; /* Ancho de los slots */
+    height: 100px; /* Altura de los slots */
+    display: flex;
+    align-items: center; /* Centrar verticalmente */
+    justify-content: center; /* Centrar horizontalmente */
+}
+
+.parking-slot:hover {
+    transform: scale(1.05);
+}
+
+/* Colores de los slots */
+.parking-slot.available { background-color: #0c4f4d; }
+.parking-slot.occupied { background-color: #7295e6; }
+.parking-slot.reserved { background-color: #d1da38; }
+.parking-slot.unavailable { background-color: #840f02; }
+
+/* Ajustes responsive */
+@media (max-width: 768px) {
+
+    .dashboard-container .content-area {
+        
+        min-height: 130vh;
+        
+       
+      
+    }
+
+
+
+    .dashboard-container .status-card {
+        padding: 5px;
+        min-width: 90px;
+        max-width: 90px;
+    }
+
+    .dashboard-container .status-card h2 {
+        font-size: 20px;
+        
+    }
+
+    .dashboard-container .status-card p {
+        font-size: 12px;
+       
+    }
+
+    .dashboard-container .area-buttons button {
+        padding: 8px 15px;
+        font-size: 12px;
+    }
+
+    .dashboard-container .parking-slot {
+        width: 90px;
+        height: 90px;
+        font-size: 20px;
+        
+    }
+
+    .parking-grid {
+       
+        grid-template-columns: repeat(2, 1fr); /* Dos columnas en pantallas pequeñas */
+        gap: 15px;
+
+        width: 1px;
+        
+        
+        
+       
+        
+    }
+}

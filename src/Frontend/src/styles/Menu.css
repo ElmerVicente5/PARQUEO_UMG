@@ -1,0 +1,166 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css');
+:root {
+    --color-fondo:#3b3e55;
+    --color-letras:#4df6d8;
+    --color-border-iconos:#ddf64d;
+  }
+/* Barra superior */
+.menu-header {
+    width: 100%;
+   
+    height: 50px;
+    background-color: var(--color-fondo);
+    color: var(--color-letras);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    padding: 0 20px;
+    border: 0.5px solid #ffffff; /* Borde blanco de 2px en todo el contorno */
+}
+
+.menu-header h1 {
+    font-size: 24px;
+    margin: 0;
+    text-align: center;
+    flex-grow: 1; /* Título ocupa todo el espacio */
+}
+
+.settings-icon i {
+    font-size: 24px;
+    color: white;
+}
+
+.settings-icon i:hover {
+    color: #ff0000;
+}
+
+/* Icono de menú lateral */
+.toggle-icon {
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+}
+
+.toggle-icon:hover {
+    color: #00ff00;
+}
+
+
+/* Sidebar */
+/* Menú lateral */
+.menu-sidebar {
+    position: fixed;
+    top: 50px; /* Alinea debajo de la barra superior */
+    left: 0;
+    width: 200px; /* Ancho fijo del menú */
+    height: 150vh; /* Abarca toda la altura de la pantalla */
+    background-color: #333; /* Fondo oscuro */
+    transition: transform 0.3s ease; /* Animación suave para mostrar/ocultar */
+    z-index: 1000; /* Asegura que el menú esté encima del contenido */
+}
+
+/* Oculta el menú moviéndolo fuera de la pantalla */
+.menu-sidebar.hidden {
+    transform: translateX(-100%);
+}
+
+/* Ajusta el contenido cuando el menú está oculto */
+.content-area {
+    margin-left: 230px; /* Deja espacio para el menú cuando está visible */
+    transition: margin-left 0.3s ease; /* Animación suave para ajustar el contenido */
+}
+
+/* Cuando el menú está oculto */
+.content-area.menu-hidden {
+    margin-left: 0; /* El contenido ocupa todo el ancho de la pantalla */
+}
+
+.menu-sidebar.collapse.show {
+    transform: translateX(0); /* Mostrar el menú */
+}
+
+/* Usuario en el sidebar */
+.menu-user-profile {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.menu-user-profile i {
+    font-size: 100px;
+    color: #ffffff;
+}
+
+.user-name {
+    font-size: 22px;
+    color:var(--color-letras);
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Menú de navegación */
+.menu-nav {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.menu-nav a {
+    width: 100%;
+}
+
+.menu-nav .btn {
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.menu-nav .btn-outline-light {
+    border-color: var(--color-letras);
+    color:var(--color-letras);
+}
+
+.menu-nav .btn-outline-light:hover {
+    background-color: var(--color-letras);
+    color: #000000;
+}
+
+.menu-nav .btn-danger {
+    background-color: transparent; /* Fondo transparente */
+    border-color: var(--color-letras); /* Borde del color de la variable */
+    color: var(--color-letras); /* Texto del color de la variable */
+}
+
+.menu-nav .btn-danger:hover, .menu-nav .btn-danger:focus {
+    background-color: var(--color-letras); /* Fondo cambia al color de la variable al pasar el mouse */
+    color: #000000; /* Texto cambia a negro */
+    border-color: #ffffff; /* Borde cambia a blanco al pasar el mouse o hacer clic */
+}
+
+
+
+
+
+
+/* Ajuste responsive */
+@media (max-width: 768px) {
+    .menu-sidebar {
+       
+        height: 130vh;
+    }
+
+    .menu-nav .btn {
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    .menu-header h1 {
+        font-size: 18px;
+    }
+
+    .settings-icon, .toggle-icon {
+        font-size: 20px;
+    }
+}

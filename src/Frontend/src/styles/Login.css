@@ -1,0 +1,89 @@
+/* Contenedor general de inicio de sesión con imagen de fondo */
+.contenedor-inicio-sesion {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('../assets/car-image.jpg'); /* imagen de fondo */
+    background-size: cover;
+    background-position: center;
+}
+
+/* Caja de inicio de sesión */
+.caja-inicio-sesion {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 10px;
+    width: 400px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Grupo de input */
+.grupo-input {
+    margin-bottom: 15px;
+}
+
+.grupo-input label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.grupo-input input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Checkbox para recordar sesión */
+.recordar-sesion {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.recordar-sesion input {
+    margin-right: 5px;
+}
+
+/* Botón de inicio de sesión */
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Opciones de inicio de sesión como links */
+.opciones-inicio-sesion {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.opciones-inicio-sesion a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.opciones-inicio-sesion a:hover {
+    text-decoration: underline;
+}
+
+/* Mensaje de error */
+.mensaje-error {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 15px;
+    text-align: center;
+}
