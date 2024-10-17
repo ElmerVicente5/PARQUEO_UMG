@@ -30,12 +30,13 @@ function RecuperarContraseña() {
             return;
         }
 
-        // Validar que las contraseñas tengan exactamente 8 caracteres y al menos una letra mayúscula
-        const regexMayuscula = /[A-Z]/;
-        if (formData.newPassword.length !== 8 || !regexMayuscula.test(formData.newPassword)) {
-            setMensajeError('La contraseña debe tener exactamente 8 caracteres y al menos una letra mayúscula');
-            return;
-        }
+       // Validar que las contraseñas tengan 8 caracteres o más y al menos una letra mayúscula
+       const regexMayuscula = /[A-Z]/;
+       if (formData.newPassword.length < 8 || !regexMayuscula.test(formData.newPassword)) {
+       setMensajeError('La contraseña debe tener 8 caracteres o más y al menos una letra mayúscula');
+       return;
+       }
+
 
         // Validar que las contraseñas coincidan
         if (formData.newPassword !== formData.confirmPassword) {

@@ -30,12 +30,13 @@ function Registro() {
             return setError(`El correo debe pertenecer al dominio ${emailDomain}`);
         }
 
-        // Validación de la contraseña
+      // Validación de la contraseña
         const contraseña = formData.contraseña;
-        const contraseñaRegex = /^(?=.*[A-Z]).{8}$/; // Al menos 8 caracteres y una letra mayúscula
+        const contraseñaRegex = /^(?=.*[A-Z]).{8,}$/; // Al menos 8 caracteres o más y una letra mayúscula
         if (!contraseñaRegex.test(contraseña)) {
-            return setError('La contraseña debe ser de 8 caracteres y debe incluir al menos una letra mayúscula.');
+        return setError('La contraseña debe tener 8 caracteres o más y debe incluir al menos una letra mayúscula.');
         }
+
 
         // Limpiar errores si la validación es exitosa
         setError('');

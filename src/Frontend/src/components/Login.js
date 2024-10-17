@@ -24,25 +24,26 @@ function IniciarSesion() {
     };
 
     // Función de validación de la contraseña
-    const validarContraseña = (contraseña) => {
-        const tieneLongitudCorrecta = contraseña.length === 8;
-        const tieneMayuscula = /[A-Z]/.test(contraseña);
-        return tieneLongitudCorrecta && tieneMayuscula;
-    };
+const validarContraseña = (contraseña) => {
+    const tieneLongitudCorrecta = contraseña.length >= 8; // Verifica si tiene 8 o más caracteres
+    const tieneMayuscula = /[A-Z]/.test(contraseña); // Verifica si contiene al menos una letra mayúscula
+    return tieneLongitudCorrecta && tieneMayuscula;
+};
 
-    // Función para manejar el envío del formulario
-    const manejarEnvio = (e) => {
-        e.preventDefault();
-        if (!validarCorreo(formulario.correo)) {
-            setError('El correo debe pertenecer al dominio @miumg.edu.gt');
-        } else if (!validarContraseña(formulario.contraseña)) {
-            setError('La contraseña debe tener 8 caracteres y contener al menos una letra mayúscula');
-        } else {
-            setError('');
-            console.log("Inicio de sesión exitoso:", formulario);
-            navigate('/dashboard');
-        }
-    };
+// Función para manejar el envío del formulario
+const manejarEnvio = (e) => {
+    e.preventDefault(); // Previene la recarga de la página
+    if (!validarCorreo(formulario.correo)) {
+        setError('El correo debe pertenecer al dominio @miumg.edu.gt');
+    } else if (!validarContraseña(formulario.contraseña)) {
+        setError('La contraseña debe tener 8 caracteres o más y contener al menos una letra mayúscula');
+    } else {
+        setError('');
+        console.log("Inicio de sesión exitoso:", formulario);
+        navigate('/dashboard'); // Navega al dashboard después de un inicio de sesión exitoso
+    }
+};
+
 
     return (
         <div className="contenedor-inicio-sesion">
