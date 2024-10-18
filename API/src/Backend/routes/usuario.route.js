@@ -5,7 +5,7 @@ const router=Router();
 
 
 router.post('/registrar',UsuarioController.registrar);
-router.get('/login',UsuarioController.iniciarSesion);
+router.post('/login',UsuarioController.iniciarSesion);
 
 
 

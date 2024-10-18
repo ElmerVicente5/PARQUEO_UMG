@@ -13,6 +13,8 @@ const registrar=async(req,res)=>{
     await body('telefono').notEmpty().isString().run(req);
 
     const errors = validationResult(req);
+    console.log("errores",errors);
+
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
