@@ -21,6 +21,7 @@ COPY . .
 
 # Expose the port the app runs on
 EXPOSE 8000
+EXPOSE 8001
 
 # Command to run the application, waiting for PostgreSQL to be ready
 CMD ["dockerize", "-wait", "tcp://db:5432", "-timeout", "30s", "node", "index.js"]

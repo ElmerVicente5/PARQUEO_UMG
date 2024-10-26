@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Test</title>
+</head>
+<body>
+    <h1>WebSocket Connection Test</h1>
+    <div id="status">Estado: Desconectado</div>
+    <input type="text" id="messageInput" placeholder="Escribe un mensaje" />
+    <button id="sendMessageBtn">Enviar Mensaje</button>
+    <div id="response"></div>
+
+    <script>
+        // Crear una conexión WebSocket
+        const socket = new WebSocket('ws://localhost:8001');
+
+        const statusDiv = document.getElementById('status');
+        const responseDiv = document.getElementById('response');
+        const sendMessageBtn = document.getElementById('sendMessageBtn');
+        const messageInput = document.getElementById('messageInput');
+
+        // Evento cuando se abre la conexión WebSocket
+        socket.onopen = () => {
+            statusDiv.innerText = 'Estado: Conectado';
+            console.log('Conectado a WebSocket');
+        };
+
+        // Evento cuando se recibe un mensaje desde el servidor WebSocket
+        socket.onmessage = (event) => {
+            console.log('Mensaje recibido del servidor:', event.data);
+            responseDiv.innerText = 'Respuesta del servidor: ' + event.data;
+        };
+
+        // Evento cuando hay un error en la conexión
+        socket.onerror = (error) => {
+            console.error('Error en la conexión:', error);
+            statusDiv.innerText = 'Estado: Error en la conexión';
+        };
+
+        // Evento cuando se cierra la conexión WebSocket
+        socket.onclose = () => {
+            statusDiv.innerText = 'Estado: Desconectado';
+            console.log('Conexión cerrada');
+        };
+
+        // Enviar mensaje al servidor cuando se hace clic en el botón
+        sendMessageBtn.addEventListener('click', () => {
+            const message = messageInput.value;
+            if (message) {
+                console.log('Enviando mensaje:', message);
+                socket.send(message);  // Enviar mensaje al servidor WebSocket
+            }
+        });
+    </script>
+</body>
+</html>

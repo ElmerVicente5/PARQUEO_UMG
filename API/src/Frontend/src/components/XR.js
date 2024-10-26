@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 
 function XR({ userName }) {
-    const [isMenuVisible, setIsMenuVisible] = useState(true); // Mostrar el menú por defecto
+    const [isMenuVisible, setIsMenuVisible] = useState(true); // Mostrar  menú por defecto
 
     const toggleMenu = () => {
         setIsMenuVisible(!isMenuVisible); // Alterna la visibilidad del menú
@@ -21,7 +21,7 @@ function XR({ userName }) {
         }
     };
 
-    // Aplicar la clase correcta cuando el componente se monta
+   
     useEffect(() => {
         const reportesContainer = document.querySelector('.reportes-container');
         if (reportesContainer) {

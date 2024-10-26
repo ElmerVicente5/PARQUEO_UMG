@@ -1,76 +1,98 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import DataTable from 'react-data-table-component';
 import { CSVLink } from 'react-csv';
-import XR from './XR'; // Usamos el componente de menú
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
+import XR from './XR'; 
+import Menu from './Menu';
 import '../styles/Reportes.css'; 
 
 function Reportes({ userName }) {
+    const [filterText, setFilterText] = useState('');
+    const [data, setData] = useState([]);
+
     const headers = [
-        { label: "ID", key: "id" },
-        { label: "Nombre", key: "name" },
-        { label: "Fecha", key: "date" },
-        { label: "Descripción", key: "description" }
+        { label: "Placa Vehículo", key: "placa" },
+        { label: "Fecha Entrada", key: "fechaentrada" },
+        { label: "Fecha Salida", key: "fechasalida" },
+        { label: "Espacio Ocupado", key: "espacioocupado" },
+        { label: "Área", key: "area" }
     ];
 
-    // Función para generar 100 registros simulados
-    function generateFakeData(num) {
-        const data = [];
-        for (let i = 1; i <= num; i++) {
-            data.push({
-                id: i,
-                name: `Usuario ${i}`,
-                date: `2024-10-${(i % 30) + 1}`, // Fecha con día entre 1 y 30
-                description: `Descripción del reporte ${i}`
-            });
-        }
-        return data;
-    }
+    // Función para obtener los datos del endpoint
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://localhost:8000/api/dashboard/obtenerRegistroVehiculos');
+                const result = await response.json();
+                setData(result.registro);  // Actualiza el estado con los datos obtenidos
+            } catch (error) {
+                console.error('Error al obtener los datos:', error);
+            }
+        };
 
-    const data = generateFakeData(100); // Genera 100 registros
+        fetchData(); // Llama a la función al montar el componente
+    }, []);
 
-    // Definir las columnas para react-data-table-component
     const columns = [
-        {
-            name: 'ID',
-            selector: row => row.id,
-            sortable: true,
-        },
-        {
-            name: 'Nombre',
-            selector: row => row.name,
-            sortable: true,
-        },
-        {
-            name: 'Fecha',
-            selector: row => row.date,
-            sortable: true,
-        },
-        {
-            name: 'Descripción',
-            selector: row => row.description,
-        }
+        { name: 'Placa Vehículo', selector: row => row.placa, sortable: true },
+        { name: 'Fecha Entrada', selector: row => row.fechaentrada, sortable: true },
+        { name: 'Fecha Salida', selector: row => row.fechasalida, sortable: true },
+        { name: 'Espacio Ocupado', selector: row => row.espacioocupado, sortable: true },
+        { name: 'Área', selector: row => row.area, sortable: true },
     ];
+
+    const filteredData = data.filter(item => {
+        return (
+            item.placa.toLowerCase().includes(filterText.toLowerCase()) ||
+            item.fechaentrada.includes(filterText) ||
+            item.fechasalida.includes(filterText) ||
+            item.espacioocupado.toString().includes(filterText) ||
+            item.area.toLowerCase().includes(filterText.toLowerCase())
+        );
+    });
+
+    const downloadExcel = () => {
+        const worksheet = XLSX.utils.json_to_sheet(filteredData);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Reportes");
+
+        const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+        const data = new Blob([excelBuffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+        saveAs(data, "reporte.xlsx");
+    };
 
     return (
         <div className="reportes-container">
-            <XR userName={userName} showBackgroundImage={false} />
+            <Menu userName={userName} showBackgroundImage={false} />
+            
             <div className="tabla-container">
                 
-                {/* DataTable */}
+                <div className="search-bar">
+                    <input
+                        type="text"
+                        placeholder="Buscar..."
+                        value={filterText}
+                        onChange={(e) => setFilterText(e.target.value)}
+                        className="form-control"
+                    />
+                </div>
+
                 <DataTable
                     columns={columns}
-                    data={data}
-                    pagination // Activa la paginación
-                    highlightOnHover // Resalta la fila al pasar el ratón
-                    striped // Alterna el color de las filas
+                    data={filteredData}
+                    pagination
+                    highlightOnHover
+                    striped
                 />
 
-
-                {/* Botón para exportar a CSV */}
                 <div className="csv-download">
-                    <CSVLink data={data} headers={headers} filename={"reporte.csv"} className="btn btn-primary">
+                    <CSVLink data={filteredData} headers={headers} filename={"reporte.csv"} className="btn btn-primary">
                         Descargar CSV
                     </CSVLink>
+                    <button onClick={downloadExcel} className="btn btn-success" style={{ marginLeft: '10px' }}>
+                        Descargar Excel
+                    </button>
                 </div>
             </div>
         </div>

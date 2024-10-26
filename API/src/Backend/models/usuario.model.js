@@ -1,35 +1,59 @@
-import {db} from '../database/conexion.database.js';
+import { db } from '../database/conexion.database.js';
 
-const crearUsuario=async(nombres,apellidos,email,password,telefono)=>{
+
+// Método para registrar un nuevo usuario
+const crearUsuario = async (nombres,apellidos, email, password,telefono, role = 'usuario') => {
+    
+    const query = {
+        text: `
+        INSERT INTO USUARIOS(NOMBRES,APELLIDOS, EMAIL, PASSWORD,TELEFONO, ROLE)
+        VALUES($1, $2, $3, $4, $5, $6)
+        RETURNING *
+        `,
+        values: [nombres,apellidos, email, password,telefono, role]
+    };
+    const { rows } = await db.query(query);
+    return rows;
+};
+
+// Método para buscar un usuario por email
+const buscarPorEmail = async (email) => {
+    const query = {
+        text: `
+        SELECT * FROM USUARIOS WHERE EMAIL=$1
+        `,
+        values: [email]
+    };
+    const { rows } = await db.query(query);
+    return rows;
+};
+
+// Método para iniciar sesión
+const login = async (email) => {
+    const query = {
+        text: `
+        SELECT * FROM USUARIOS WHERE EMAIL=$1
+        `,
+        values: [email]
+    };
+    const { rows } = await db.query(query);
+    return rows;
+};
+
+const buscarPorId=async(id)=>{
     const query={
         text:`
-            INSERT INTO usuarios(nombres,apellidos,email,password,telefono)
-            VALUES($1,$2,$3,$4,$5)
-            RETURNING *
+        SELECT * FROM USUARIOS WHERE ID=$1
         `,
-        values:[nombres,apellidos,email,password,telefono]
-    }
-    const {rows}=await db.query(query);
-    return rows;
-
-}
-
-
-const buscarUsuarioPorEmail=async(email)=>{
-    const query={
-        text:`
-            SELECT email,password FROM usuarios WHERE EMAIL=$1
-        `,
-        values:[email]
-    }
+        values:[id]
+    };
     const {rows}=await db.query(query);
     return rows;
 }
-
-
-
-
-export const UsuarioModel={
+// Exportar el modelo
+export const UsuarioModel = {
     crearUsuario,
-    buscarUsuarioPorEmail
-}
+    buscarPorEmail,
+    login,
+    buscarPorId
+};

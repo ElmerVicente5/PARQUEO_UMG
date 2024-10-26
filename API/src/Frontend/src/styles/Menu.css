@@ -43,6 +43,7 @@
     font-size: 24px;
     color: white;
     cursor: pointer;
+    margin-top: 30px;
 }
 
 .toggle-icon:hover {
@@ -53,14 +54,15 @@
 /* Sidebar */
 /* Menú lateral */
 .menu-sidebar {
-    position: fixed;
-    top: 50px; /* Alinea debajo de la barra superior */
-    left: 0;
-    width: 200px; /* Ancho fijo del menú */
-    height: 150vh; /* Abarca toda la altura de la pantalla */
-    background-color: #333; /* Fondo oscuro */
-    transition: transform 0.3s ease; /* Animación suave para mostrar/ocultar */
-    z-index: 1000; /* Asegura que el menú esté encima del contenido */
+    height: 100vh; 
+    overflow-y: auto; 
+    position: fixed; /* Mantener el menú en su lugar */
+    top: 0; /* Alinear al borde superior */
+    left: 0; /* Alinear al borde izquierdo */
+    width: 250px; /* Ajusta el ancho según sea necesario */
+    z-index: 1000; 
+    margin-top: 50px !important; /* Deja espacio para la barra superior */
+
 }
 
 /* Oculta el menú moviéndolo fuera de la pantalla */
@@ -106,6 +108,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    padding: 1rem;
 }
 
 .menu-nav a {

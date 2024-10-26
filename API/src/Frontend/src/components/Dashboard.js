@@ -1,53 +1,89 @@
-import React, { useState } from 'react';
+// Dashboard.js
+import React, { useState, useEffect } from 'react';
+import { useSocket } from '../context/SocketContext';  // Importa el hook para acceder al socket
 import Menu from './Menu';
-import '../styles/Dashboard.css'; // Mantén este archivo si tienes estilos personalizados
+import '../styles/Dashboard.css';
 
-function Dashboard({userName}) {
-  
-
-  const areas = [
-    { name: 'SUR', disponibles: 1, ocupados:5, reservados: 3, nodisponible: 1 },
+function Dashboard({ userName }) {
+  const socket = useSocket();  // Usa el socket desde el contexto
+  const [areas, setAreas] = useState([
+    { name: 'SUR', disponibles: 0, ocupados: 0, reservados: 0, nodisponible: 0 },
     { name: 'ESTE', disponibles: 0, ocupados: 0, reservados: 0, nodisponible: 0 },
     { name: 'OESTE', disponibles: 0, ocupados: 0, reservados: 0, nodisponible: 0 },
     { name: 'NORTE', disponibles: 0, ocupados: 0, reservados: 0, nodisponible: 0 },
     { name: 'CENTRAL', disponibles: 0, ocupados: 0, reservados: 0, nodisponible: 0 }
-  ];
+  ]);
 
-  const [selectedArea, setSelectedArea] = useState('SUR'); // Área seleccionada por defecto
-
-  // Función para generar slots por área
-  const generateSlotsForArea = (area) => {
-    let slots = [];
-    let idCounter = 1;
-
-    // Función para generar un número de slots con un estado específico
-    const createSlots = (count, status) => {
-      for (let i = 0; i < count; i++) {
-        slots.push({ id: `S${idCounter++}`, status });
+  const [selectedArea, setSelectedArea] = useState('SUR');
+  const [slots, setSlots] = useState([]);
+  const [espacios, setEspacios] = useState([]);
+ 
+  useEffect(() => {
+    if (!socket) return;
+    // Verifica la conexión
+    const reconnectSocket = () => {
+      if (socket.disconnected) {
+        socket.connect();
       }
     };
 
-    // Buscar el área seleccionada y generar los slots basados en sus cantidades
+  reconnectSocket();
+
+    socket.on('estadoParqueo', (espaciosRecibidos) => {
+      console.log('Espacios actualizados recibidos desde el WebSocket:', espaciosRecibidos);
+      setEspacios(espaciosRecibidos);
+
+      const updatedAreas = areas.map(area => {
+        if (area.name === 'SUR') {
+          const disponibles = espaciosRecibidos.filter(e => e.estado === 'disponible').length;
+          const ocupados = espaciosRecibidos.filter(e => e.estado === 'ocupado').length;
+          const reservados = espaciosRecibidos.filter(e => e.estado === 'reservado').length;
+          const nodisponible = espaciosRecibidos.filter(e => e.estado === 'noDisponible').length;
+
+          return {
+            ...area,
+            disponibles,
+            ocupados,
+            reservados,
+            nodisponible
+          };
+        }
+        return area;
+      });
+
+      setAreas(updatedAreas);
+    });
+
+    return () => {
+      socket.off('estadoParqueo');
+    };
+  }, [socket, areas]);
+
+  const generateSlotsForArea = (area) => {
+    let slots = [];
     const areaData = areas.find(a => a.name === area);
+
     if (areaData) {
-      createSlots(areaData.disponibles, 'available');
-      createSlots(areaData.ocupados, 'occupied');
-      createSlots(areaData.reservados, 'reserved');
-      createSlots(areaData.nodisponible, 'unavailable');
+      slots = espacios.map(espacio => ({
+        id: `S${espacio.id_espacio}`,
+        status: espacio.estado === 'disponible' ? 'available' :
+                espacio.estado === 'ocupado' ? 'occupied' :
+                espacio.estado === 'reservado' ? 'reserved' :
+                'unavailable'
+      }));
     }
 
     return slots;
   };
 
-  const [slots, setSlots] = useState(generateSlotsForArea(selectedArea)); // Estado inicial para los slots en el área por defecto
+  useEffect(() => {
+    setSlots(generateSlotsForArea(selectedArea));
+  }, [selectedArea, espacios]);
 
-  // Función para manejar el clic en las áreas y actualizar los slots
   const handleAreaClick = (area) => {
-    setSelectedArea(area); // Actualiza el área seleccionada
-    setSlots(generateSlotsForArea(area)); // Genera los slots correspondientes a la nueva área
+    setSelectedArea(area);
   };
 
-  // Función para verificar si el área está vacía
   const isAreaEmpty = (area) => {
     const areaData = areas.find(a => a.name === area);
     return (
@@ -60,13 +96,8 @@ function Dashboard({userName}) {
 
   return (
     <div className="container-fluid dashboard-container">
-      {/* Invocamos el componente Menu sin imagen de fondo */}
       <Menu userName={userName} showBackgroundImage={false} />
-
-      {/* Contenido principal */}
       <div className="content-area">
-        
-        {/* Tarjetas de estado */}
         <div className="row status-cards mb-4">
           {['DISPONIBLES', 'OCUPADOS', 'RESERVADOS', 'NO DISPONIBLE'].map((label, idx) => {
             const areaData = areas.find(a => a.name === selectedArea);
@@ -86,7 +117,6 @@ function Dashboard({userName}) {
           })}
         </div>
 
-        {/* Botones de áreas de estacionamiento */}
         <div className="row area-buttons mb-4">
           {areas.map(area => (
             <div key={area.name} className="col-6 col-sm-4 col-md-2">
@@ -100,7 +130,6 @@ function Dashboard({userName}) {
           ))}
         </div>
 
-        {/* Mapa de slots de estacionamiento o mensaje si el área está vacía */}
         {isAreaEmpty(selectedArea) ? (
           <div className="text-center text-white">No hay nada en esta área.</div>
         ) : (

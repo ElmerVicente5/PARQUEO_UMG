@@ -3,10 +3,11 @@ version: '3'
 services:
   web:
     build:
-      context: ./src/Frontend  # Ajusta la ruta al directorio de tu frontend
-      dockerfile: Dockerfile    # Utiliza el Dockerfile que ya tienes en el directorio frontend
+      context: ./src/Frontend  
+      dockerfile: Dockerfile    # utiliza el DOCKERFILE
     ports:
-      - "3000:3000"  # Mapea el puerto del contenedor al puerto de tu máquina
+      - "3000:3000"
+    
     depends_on:
       - api
 
@@ -27,6 +28,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
+      - "8001:8001"  # Mapea el puerto del contenedor al puerto de tu máquina
     environment:
       DATABASE_URL: ${DATABASE_URL}
       NODE_ENV: development

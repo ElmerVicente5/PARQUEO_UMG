@@ -1,0 +1,8 @@
+# Ignorar los directorios node_modules en ambas carpetas
+API/Backend/node_modules/
+API/Frontend/node_modules/
+
+# Otras configuraciones de ignorar
+*.log
+.idea/
+.vscode/

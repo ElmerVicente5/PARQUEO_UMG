@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles/Login.css';
@@ -11,7 +11,25 @@ function IniciarSesion() {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    // Función para manejar los cambios en los inputs
+    useEffect(() => {
+        // Captura el token desde la URL si fue redirigido desde la autenticación de Google
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+       
+        if (token) {
+            // Guardar el token en sessionStorage o localStorage
+            sessionStorage.setItem('token', token);
+            //sessionStorage.setItem('userRole', role); // Guardar el rol
+            console.log('Token y rol guardados:', token);
+            //console.log('Token guardado:', token);
+
+            // Redirigir al dashboard
+            navigate('/dashboard');
+        }else{
+            console.log('No se recibió token de Google o  el role');
+        }
+    }, [navigate]);
+
     const manejarCambio = (e) => {
         setFormulario({
             ...formulario,
@@ -19,59 +37,55 @@ function IniciarSesion() {
         });
     };
 
-    // Función de validación del correo
     const validarCorreo = (correo) => {
         return correo.endsWith('@miumg.edu.gt');
     };
 
-    // Función de validación de la contraseña
     const validarContraseña = (contraseña) => {
-        const tieneLongitudCorrecta = contraseña.length >= 8; // Verifica si tiene 8 o más caracteres
-        const tieneMayuscula = /[A-Z]/.test(contraseña); // Verifica si contiene al menos una letra mayúscula
+        const tieneLongitudCorrecta = contraseña.length >= 8;
+        const tieneMayuscula = /[A-Z]/.test(contraseña);
         return tieneLongitudCorrecta && tieneMayuscula;
     };
 
-    // Función para manejar el envío del formulario y hacer la solicitud a la API
     const manejarEnvio = async (e) => {
-        e.preventDefault(); // Previene la recarga de la página
+        e.preventDefault();
         if (!validarCorreo(formulario.correo)) {
             setError('El correo debe pertenecer al dominio @miumg.edu.gt');
         } else if (!validarContraseña(formulario.contraseña)) {
             setError('La contraseña debe tener 8 caracteres o más y contener al menos una letra mayúscula');
         } else {
             setError('');
-
+    
             try {
-                // Realiza la solicitud POST a la API
                 const response = await axios.post('http://localhost:8000/api/usuario/login', {
-                    email: formulario.correo,  // Asegúrate de que el campo se llame 'email' como lo espera el backend
-                    password: formulario.contraseña // Asegúrate de que el campo se llame 'password' como lo espera el backend
+                    email: formulario.correo,
+                    password: formulario.contraseña
                 });
-
-                // Verifica si el inicio de sesión fue exitoso
+    
                 if (response.status === 200) {
                     console.log("Inicio de sesión exitoso:", response.data);
-                    // Redirige al dashboard después del inicio de sesión exitoso
+                    sessionStorage.setItem('token', response.data.token);
                     navigate('/dashboard');
-                } else {
-                    // Si no fue un 200, muestra el mensaje de error devuelto
-                    setError(response.data.message || 'Error inesperado');
                 }
             } catch (error) {
-                // Manejo de errores de la solicitud
                 if (error.response) {
-                    // Si el servidor respondió con un código de estado fuera del rango de 2xx
-                    setError(error.response.data.message || 'Error inesperado');
+                    if (error.response.status === 401 || error.response.status === 403) {
+                        setError('Usuario o contraseña incorrectos.');
+                    } else {
+                        setError(error.response.data.message || 'Error inesperado');
+                    }
                 } else if (error.request) {
-                    // Si la solicitud fue realizada pero no se recibió respuesta
                     setError('No se recibió respuesta del servidor.');
                 } else {
-                    // Algo ocurrió al configurar la solicitud
                     setError('Error al configurar la solicitud: ' + error.message);
                 }
                 console.error('Error al iniciar sesión:', error);
             }
         }
+    };
+
+    const iniciarSesionConGoogle = () => {
+        window.location.href = 'http://localhost:8000/api/usuario/auth/google';
     };
 
     return (
@@ -106,6 +120,10 @@ function IniciarSesion() {
                     {error && <p className="mensaje-error">{error}</p>}
                     <button type="submit" className="btn-enviar">Iniciar Sesión</button>
                 </form>
+
+                <button onClick={iniciarSesionConGoogle} className="btn-enviar">
+                    Iniciar sesión con Google
+                </button>
 
                 <div className="opciones-inicio-sesion">
                     <Link to="/forgot-password">¿Olvidó su contraseña?</Link>
