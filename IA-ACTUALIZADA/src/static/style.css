@@ -1,0 +1,35 @@
+/* Reseteo básico de márgenes y fuentes */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f4f4f9;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    text-align: center;
+}
+
+img {
+    max-width: 80%;
+    height: auto; /* Ajusta la altura automáticamente para mantener la proporción */
+    border-radius: 10px; /* Esquinas redondeadas */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para un efecto visual */
+}
+
+.container {
+    text-align: center;
+    padding: 20px;
+}
